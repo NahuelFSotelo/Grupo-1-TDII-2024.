@@ -93,8 +93,9 @@ int main(void)
      uint16_t modo_recorrido=1;
      uint16_t num_led_t =3;
      uint16_t puntero_led_t=0;
-     uint32_t current_time;
      uint16_t time_LED[] = {100,300,600};
+     uint16_t estado_on_off_t=1;
+     uint16_t CURRENT_time[]= {100,300,600};
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -159,10 +160,19 @@ int main(void)
 	    	    }
 	    if(modo_recorrido==2)             //SECUENCIA 3 ENCIENDE UN LEDX EN UN TIEMPO X
 	    {
-               if(HAL_GetTick() - current_time >= time_LED[puntero_led_t])
+               if(HAL_GetTick() - CURRENT_time[puntero_led_t] >= time_LED[puntero_led_t])
                {
-            	   HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]);
-            	   current_time=HAL_GetTick();
+
+            	   if(estado_on_off_t==1)
+            	   {
+            		   HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_SET);
+            	   }
+            	   if(estado_on_off_t==-1)
+            	   {
+            		   HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_RESET);
+            	   }
+            	   CURRENT_time[puntero_led_t]=HAL_GetTick();
+            	   estado_on_off_t=estado_on_off_t*-1;
                }
                puntero_led_t++;
                if(puntero_led_t>=num_led_t)
@@ -172,13 +182,25 @@ int main(void)
 	    }
 	    if(modo_recorrido==3)               //SECUENCIA 4  ENCIENDE ENCIENDE PARES, IMPARES APAGADOS
 	    {
-	    	if(puntero_led_t%2==0)
+	    	if(puntero_led_t % 2==0)
 	    	{
-	    		HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]);
+	    		for(uint8_t i = 0; i < num_led_t; i++)
+	    		{
+	    			if(i%2==0)
+	    			    {
+	    				    HAL_GPIO_WritePin(GPIOB, LED[i], GPIO_PIN_SET);
+           	    		}
+	    		}
 	    	}
 	    	else
 	    	{
-	    		HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]);
+	    		for(uint8_t i = 0; i < num_led_t; i++)
+	    	    {
+	    			if(i %2 !=0)
+	    			  {
+	    				HAL_GPIO_WritePin(GPIOB, LED[i], GPIO_PIN_SET);
+	    		      }
+	    	    }
 	    	}
 	    	puntero_led_t++;
 	    	if(puntero_led_t>=num_led_t)
@@ -186,6 +208,10 @@ int main(void)
 	    	       puntero_led_t=0;
 	    	}
 	    	HAL_Delay(150);
+	    	for(uint8_t i = 0; i < num_led_t; i++)
+	    		   {
+	    	           HAL_GPIO_WritePin(GPIOB, LED[i], GPIO_PIN_RESET);  //apaga todos los leds
+	    		   }
 	    }
 
     /* USER CODE BEGIN 3 */

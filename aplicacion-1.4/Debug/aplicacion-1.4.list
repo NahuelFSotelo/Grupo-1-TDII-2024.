@@ -440,8 +440,8 @@ int main(void)
  8000548:	777b      	strb	r3, [r7, #29]
  800054a:	e00c      	b.n	8000566 <main+0x8a>
 	   {
-	    	HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]);
- 800054c:	8bfb      	ldrh	r3, [r7, #30]
+	    	HAL_GPIO_TogglePin(GPIOB, LED[i]);
+ 800054c:	7f7b      	ldrb	r3, [r7, #29]
  800054e:	005b      	lsls	r3, r3, #1
  8000550:	3320      	adds	r3, #32
  8000552:	443b      	add	r3, r7

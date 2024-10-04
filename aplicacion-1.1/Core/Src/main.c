@@ -115,9 +115,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-	  HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]); //enciende el led en la posicion x almacenada en el arreglo LED
+	  HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_SET); //enciende el led en la posicion x almacenada en el arreglo LED
 	  HAL_Delay(200);
-	  HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]);
+	  HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_RESET);
 	  HAL_Delay(200);
 	  puntero_led_t++;                                       // aumenta el puntero
 	   if(puntero_led_t >= num_led_t)                        // condicion para volver a comnezar una vez que recorre el arreglo

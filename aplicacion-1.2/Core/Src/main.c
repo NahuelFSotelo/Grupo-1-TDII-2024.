@@ -90,7 +90,7 @@ int main(void)
   /* USER CODE BEGIN Init */
      uint16_t LED[] = {LD1_Pin, LD2_Pin, LD3_Pin}; /*Creo vector de LEDs de usuario*/
      uint16_t User_Button;
-     uint16_t modo_recorrido=1;
+     uint16_t modo_recorrido=0;
      uint16_t num_led_t =3;
      uint16_t puntero_led_t=0;
   /* USER CODE END Init */
@@ -119,40 +119,41 @@ int main(void)
 	  User_Button = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
 	          if(User_Button==1)
 	          {
-		         modo_recorrido=modo_recorrido*(-1);
+		         modo_recorrido++;
+		         if(modo_recorrido>1)
+		         {
+		        	 modo_recorrido=0;
+		         }
 		           for(uint8_t i = 0; i < num_led_t; i++)
 		           {
 		        	   HAL_GPIO_WritePin(GPIOB, LED[i], GPIO_PIN_RESET);  //cuando presionamos el boton apagamos todos los leds
 		           }
 		           HAL_Delay(20);
 	          }
-	    if(modo_recorrido==1)
+	    if(modo_recorrido==0)
 	    {
 	    	HAL_Delay(200);
 	    	HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_SET); //enciende el led en la posicion x almacenada en el arreglo LED
-	    	if(puntero_led_t > 0) {                                     //CONDICION QUE EVITA UNA POSICION NEGATIVA EN EL ARREGLO
-	    	    HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t-1], GPIO_PIN_RESET);
-	    	}
 	        HAL_Delay(200);
+	        HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_RESET);
 	    	puntero_led_t++;                                       // aumenta el puntero
-	    		   if(puntero_led_t >= num_led_t)                        // condicion para volver a comnezar una vez que recorre el arreglo
+	    		   if(puntero_led_t > num_led_t)                        // condicion para volver a comnezar una vez que recorre el arreglo
 	    		     {
 	    			  puntero_led_t=0;
 	    		     }
 	    }
-	    if(modo_recorrido==-1)
+	    if(modo_recorrido==1)
 	    	    {
 	    	    HAL_Delay(200);
 	    	    HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_SET); //enciende el led en la posicion x almacenada en el arreglo LED
-	    	    if(puntero_led_t < num_led_t-1) {
-	    	    	   HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t+1], GPIO_PIN_RESET);
-	    	    }
-	    	     HAL_Delay(200);
-	    	         puntero_led_t--;                                       // aumenta el puntero
-	    	    		   if(puntero_led_t<0)                        // condicion para volver a comnezar una vez que recorre el arreglo
+	    	    HAL_Delay(200);
+	    	    HAL_GPIO_WritePin(GPIOB, LED[puntero_led_t], GPIO_PIN_RESET);
+	    	                                             // aumenta el puntero
+	    	    		   if(puntero_led_t==0)                        // condicion para volver a comnezar una vez que recorre el arreglo
 	    	    		     {
-	    	    			  puntero_led_t=num_led_t-1;
+	    	    			  puntero_led_t=num_led_t;
 	    	    		     }
+	    	    		   puntero_led_t--;
 	    	    }
 
     /* USER CODE BEGIN 3 */

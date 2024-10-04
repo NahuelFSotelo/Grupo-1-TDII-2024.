@@ -128,7 +128,7 @@ int main(void)
 	          }
 	   for(uint8_t i = 0; i < num_led_t; i++)          //cambiamos el estado de todos los led
 	   {
-	    	HAL_GPIO_TogglePin(GPIOB, LED[puntero_led_t]);
+	    	HAL_GPIO_TogglePin(GPIOB, LED[i]);
 	   }
 	   HAL_Delay(time_LED[puntero_led_t]);
 
